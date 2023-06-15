@@ -22,10 +22,51 @@ class MaxBinaryHeap {
 		}
 		return values;
 	}
+	removeMax() {
+		let values = this.values;
+		let max = values[0];
+
+		values[0] = values.pop();
+
+		let currentIndex = 0;
+		while (true) {
+			let current = values[currentIndex];
+
+			let leftChildIndex = currentIndex ** 2 + 1,
+				rightChildIndex = currentIndex ** 2 + 2,
+				leftChild,
+				rightChild;
+
+			if (leftChildIndex < values.length) {
+				leftChild = values[leftChildIndex];
+				if (leftChild > current) {
+					values[currentIndex] = values[leftChildIndex];
+					values[leftChildIndex] = current;
+					currentIndex = leftChildIndex;
+				}
+			}
+			if (rightChildIndex < values.length) {
+				rightChild = values[rightChildIndex];
+				if (
+					(rightChild > current && current !== leftChildIndex) ||
+					rightChild > leftChild
+				) {
+					values[currentIndex] = values[rightChildIndex];
+					values[rightChildIndex] = current;
+					currentIndex = rightChildIndex;
+				}
+			}
+			if (current === values[currentIndex]) break;
+		}
+		return max;
+	}
 }
 let mbh = new MaxBinaryHeap();
 mbh.insert(4);
 mbh.insert(6);
 mbh.insert(7);
 mbh.insert(10);
-console.log(mbh);
+console.log(mbh.removeMax(), mbh);
+
+console.log(mbh.removeMax(), mbh);
+// console.log(mbh);
